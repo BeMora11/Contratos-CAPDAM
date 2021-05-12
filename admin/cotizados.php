@@ -43,7 +43,7 @@ if (isset($_SESSION['correo'])) {
     <div id="sidebar" class="active">
       <div class="sidebar-wrapper active">
         <div class="sidebar-header">
-        <div class="text-center">
+          <div class="text-center">
             <a href="index.php"><img src="../assets/images/logo_fondo.png" class="w-100 h-100" alt="Logo" srcset=""></a>
           </div>
           <div class="d-flex justify-content-between">
@@ -119,7 +119,7 @@ if (isset($_SESSION['correo'])) {
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                
+
               </ul>
               <div class="dropdown">
                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
@@ -165,7 +165,6 @@ if (isset($_SESSION['correo'])) {
                       <th>Tipo de contrato</th>
                       <th>Estatus</th>
                       <th>Fecha de cotización</th>
-                      <th>Adjuntos</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -203,14 +202,10 @@ if (isset($_SESSION['correo'])) {
                                 <td>' . $solicitud['correo'] . '</td>
                                 <td>' . $solicitud['telefono'] . '</td>
                                 <td>' . $solicitud['tipo_contrato'] . '</td>
-                                <td><span class="badge bg-success">' . $estado . '</span></td>
-                                <td>' . strftime('%m-%d-%Y %I:%M %p', strtotime($solicitud['fecha_solicitud'])) . '</td>
-                                <td>
-                                  <a target="_blank" href="../cotizaciones/' . $solicitud['contrato'] . '/' . $solicitud['cotizacion'] . '" class="btn btn-sm btn-info"><i class="fas fa-file"></i>Cotización</a>
-                                </td>
                                 <td>
                                   ' . $estado_envio . '
                                 </td>
+                                <td>' . strftime('%m-%d-%Y %I:%M %p', strtotime($solicitud['fecha_solicitud'])) . '</td>
                               </tr>';
                     }
                     ?>
