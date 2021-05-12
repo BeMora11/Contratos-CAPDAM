@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2021 a las 18:30:55
+-- Tiempo de generación: 12-05-2021 a las 18:34:47
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.15
 
@@ -46,15 +46,6 @@ CREATE TABLE `contratacion` (
   `fecha_solicitud` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `contratacion`
---
-
-INSERT INTO `contratacion` (`id_contratacion`, `nombre`, `apellidos`, `correo`, `telefono`, `domicilio`, `delegacion`, `derecho_posesion`, `predial`, `ine`, `curp`, `vocacion_uso`, `fachada`, `tipo_contrato`, `estado`, `fecha_solicitud`) VALUES
-(37, 'Erik', 'Mora', 'emora3@ucol.mx', '1234567890', 'Av. Las Garzas  ', 1, 'Act4.docx', 'Act4.pdf', 'Actividad 3.pdf', 'Analisis.pdf', NULL, 'Contrato de trabajo.pdf', 'Rural', 2, '2021-05-12 10:48:08'),
-(38, 'Erik', 'Mora', 'emora3@ucol.mx', '1234567890', 'Av. Gaviotas #89', 1, 'Act4.docx', 'Act4.pdf', 'Actividad 3.pdf', 'Codigos de etica.docx', NULL, 'Derecho laboral mexicano.pdf', 'Rural', 2, '2021-05-12 11:25:25'),
-(39, 'Erik', 'Mora', 'emora3@ucol.mx', '1234567890', 'Av. Las Garzas  ', 2, 'Act4.docx', 'Act4.pdf', 'Actividad 3.pdf', 'Contrato de trabajo.docx', 'derecho laboral.docx', 'La huelga.pptx', 'Urbana', 1, '2021-05-12 11:26:07');
-
 -- --------------------------------------------------------
 
 --
@@ -68,17 +59,6 @@ CREATE TABLE `cotizaciones` (
   `fecha_cotizado` datetime NOT NULL,
   `estatus_cotizacion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `cotizaciones`
---
-
-INSERT INTO `cotizaciones` (`id_cotizacion`, `contrato`, `cotizacion`, `fecha_cotizado`, `estatus_cotizacion`) VALUES
-(2, 29, 'cuestionario.pdf', '2021-05-04 10:50:42', 1),
-(3, 31, 'opinion.pdf', '2021-05-05 18:57:15', 0),
-(4, 35, 'Cuestionario.pdf', '2021-05-07 11:40:47', 1),
-(5, 37, 'Contrato de trabajo.pdf', '2021-05-12 11:14:55', 1),
-(6, 38, 'Derecho laboral mexicano.docx', '2021-05-12 11:28:06', 1);
 
 -- --------------------------------------------------------
 
