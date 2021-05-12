@@ -1,3 +1,23 @@
+<?php
+session_start();
+
+include_once '../php/conexion.php';
+$conexion = new Conexion();
+
+if (isset($_SESSION['correo'])) {
+  $usuarioCorreo = $_SESSION['correo'];
+  $usuario = $conexion->connect()->query("SELECT * FROM usuarios WHERE correo = '$usuarioCorreo'");
+  $usuario->execute();
+
+  $rowUsuario = $usuario->fetch();
+
+  if ($rowUsuario['rol'] != 2) {
+    header("Location: ../index.php");
+  }
+} else {
+  header("Location: ../index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -23,10 +43,10 @@
     <div id="sidebar" class="active">
       <div class="sidebar-wrapper active">
         <div class="sidebar-header">
+          <div class="text-center">
+            <a href="index.php"><img src="../assets/images/logo_fondo.png" class="w-100 h-100" alt="Logo" srcset=""></a>
+          </div>
           <div class="d-flex justify-content-between">
-            <div class="logo">
-              <a href="index.html"><img src="" alt="Logo" srcset=""></a>
-            </div>
             <div class="toggler">
               <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
             </div>
@@ -78,48 +98,24 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown me-1">
-                  <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class='bi bi-envelope bi-sub fs-4 text-gray-600'></i>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    <li>
-                      <h6 class="dropdown-header">Mail</h6>
-                    </li>
-                    <li><a class="dropdown-item" href="#">No new mail</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown me-3">
-                  <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    <li>
-                      <h6 class="dropdown-header">Notifications</h6>
-                    </li>
-                    <li><a class="dropdown-item">No notification available</a></li>
-                  </ul>
-                </li>
+
               </ul>
               <div class="dropdown">
                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                   <div class="user-menu d-flex">
                     <div class="user-name text-end me-3">
-                      <h6 class="mb-0 text-gray-600">John Ducky</h6>
-                      <p class="mb-0 text-sm text-gray-600">Administrator</p>
+                      <h6 class="mb-0 text-gray-600">Recepcionista</h6>
+                      <h6 class="mb-0 text-gray-600"><?php echo $rowUsuario['correo']; ?> </h6>
                     </div>
                     <div class="user-img d-flex align-items-center">
                       <div class="avatar avatar-md">
-                        <img src="">
+                        <img src="../assets/images/logo.png">
                       </div>
                     </div>
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                  <li>
-                    <h6 class="dropdown-header">Hello, John!</h6>
-                  </li>
-                  <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-box-arrow-left me-2"></i> Cerrar sesión</a></li>
+                  <li><a class="dropdown-item" href="../php/logout.php"><i class="icon-mid bi bi-box-arrow-left me-2"></i> Cerrar sesión</a></li>
                 </ul>
               </div>
             </div>
@@ -146,6 +142,7 @@
                       <th>Correo</th>
                       <th>Telefono</th>
                       <th>Tipo de contrato</th>
+                      <th>Delegación</th>
                       <th>Estatus</th>
                       <th>Fecha de solicitud</th>
                       <th>Adjuntos</th>
@@ -154,10 +151,8 @@
                   </thead>
                   <tbody>
                     <?php
-                    include_once '../php/conexion.php';
-                    $conexion = new Conexion();
 
-                    $query = $conexion->connect()->query("SELECT * FROM contratacion WHERE estado = 0");
+                    $query = $conexion->connect()->query("SELECT * FROM contratacion INNER JOIN delegaciones ON contratacion.delegacion = delegaciones.id_delegacion WHERE estado = 0");
                     $query->execute();
 
                     $solicitudes = $query->fetchAll();
@@ -182,10 +177,11 @@
                                 <td>' . $solicitud['correo'] . '</td>
                                 <td>' . $solicitud['telefono'] . '</td>
                                 <td>' . $solicitud['tipo_contrato'] . '</td>
+                                <td>' . $solicitud['delegacion'] . '</td>
                                 <td><span class="badge bg-danger">' . $estado . '</span></td>
                                 <td>' . strftime('%m-%d-%Y %I:%M %p', strtotime($solicitud['fecha_solicitud'])) . '</td>
                                 <td>
-                                  <div class="dropdown">
+                                  <div class="">
                                     <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                       <i class="fas fa-folder mr-2"></i>
                                     </button>
@@ -202,10 +198,10 @@
                                 <td>
                                 <div class="row">
                                   <div class="col-sm-12 mb-1">
-                                    <button onclick="aceptar_solicitud('.$solicitud['id_contratacion'].')" class="btn btn-sm btn-primary">Aceptar</button>
+                                    <button onclick="aceptar_solicitud(' . $solicitud['id_contratacion'] . ')" class="btn btn-sm btn-primary">Aceptar</button>
                                   </div>
                                   <div class="col-sm-12">
-                                    <button onclick="rechazar_solicitud('.$solicitud['id_contratacion'].')" class="btn btn-sm btn-danger">Rechazar</button>
+                                    <button onclick="rechazar_solicitud(' . $solicitud['id_contratacion'] . ')" class="btn btn-sm btn-danger">Rechazar</button>
                                   </div>
                                 </div>
                                 </td>

@@ -11,13 +11,19 @@ if (isset($_SESSION['correo'])) {
 
   $rowUsuario = $usuario->fetch();
 
-  if ($rowUsuario['rol'] != 2) {
+  $delegacion = $conexion->connect()->query("SELECT * FROM delegaciones WHERE id_delegacion =" . $rowUsuario['delegacion']);
+  $delegacion->execute();
+
+  $rowDelegacion = $delegacion->fetch();
+
+  if ($rowUsuario['rol'] != 1) {
     header("Location: ../index.php");
   }
 } else {
   header("Location: ../index.php");
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -56,30 +62,12 @@ if (isset($_SESSION['correo'])) {
           <ul class="menu">
             <li class="sidebar-title">Menú</li>
 
-            <!-- <li class="sidebar-item  ">
-              <a href="index.html" class='sidebar-link'>
+            <li class="sidebar-item  ">
+              <a href="index.php" class='sidebar-link'>
                 <i class="bi bi-grid-fill"></i>
-                <span>Dashboard</span>
+                <span>Cotizar</span>
               </a>
-            </li> -->
-
-            <li class="sidebar-item  has-sub">
-              <a href="#" class='sidebar-link'>
-                <i class="fas fa-folder"></i>
-                <span>Solicitudes</span>
-              </a>
-              <ul class="submenu ">
-                <li class="submenu-item ">
-                  <a href="index.php">Pendientes</a>
-                </li>
-                <li class="submenu-item ">
-                  <a href="cotizados.php">Cotizados</a>
-                </li>
-              </ul>
             </li>
-
-
-
           </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
@@ -104,7 +92,7 @@ if (isset($_SESSION['correo'])) {
                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                   <div class="user-menu d-flex">
                     <div class="user-name text-end me-3">
-                      <h6 class="mb-0 text-gray-600">Recepcionista</h6>
+                      <h6 class="mb-0 text-gray-600">Delegación: <?php echo $rowDelegacion['delegacion']; ?></h6>
                       <h6 class="mb-0 text-gray-600"><?php echo $rowUsuario['correo']; ?> </h6>
                     </div>
                     <div class="user-img d-flex align-items-center">
@@ -128,7 +116,7 @@ if (isset($_SESSION['correo'])) {
           <div class="page-title">
             <div class="row">
               <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Solicitudes de contratación cotizados</h3>
+                <h3>Solicitudes pendientes</h3>
               </div>
             </div>
           </div>
@@ -139,19 +127,17 @@ if (isset($_SESSION['correo'])) {
                   <thead>
                     <tr class="text-center">
                       <th>Nombre</th>
-                      <th>Correo</th>
-                      <th>Telefono</th>
-                      <th>Tipo de contrato</th>
+                      <th>No. contrato</th>
+                      <th>Domicilio</th>
                       <th>Estatus</th>
-                      <th>Fecha de cotización</th>
-                      <th>Adjuntos</th>
+                      <th>Fecha de solicitud</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
 
-                    $query = $conexion->connect()->query("SELECT * FROM cotizaciones INNER JOIN contratacion ON cotizaciones.contrato = contratacion.id_contratacion");
+                    $query = $conexion->connect()->query("SELECT * FROM contratacion WHERE estado = 1 AND delegacion =".$rowDelegacion['id_delegacion']);
                     $query->execute();
 
                     $solicitudes = $query->fetchAll();
@@ -160,13 +146,6 @@ if (isset($_SESSION['correo'])) {
 
                       $estado = '';
                       $vocacion;
-                      $estado_envio = '';
-
-                      if ($solicitud['estatus_cotizacion'] == 0) {
-                        $estado_envio = '<button onclick="enviarCotizacion(' . $solicitud['id_cotizacion'] . ')" class="btn btn-sm btn-primary"><i class="fas fa-paper-plane me-2"></i>Enviar cotización</button>';
-                      } else {
-                        $estado_envio = '<span class="badge bg-info">Cotización enviada</span>';
-                      }
 
                       if ($solicitud['vocacion_uso'] != null) {
                         $vocacion = '<a class="dropdown-item" href="../solicitudes/' . $solicitud['correo'] . '/' . $solicitud['vocacion_uso'] . '" target="_blank">Vocación de uso de suelo</a>';
@@ -174,28 +153,49 @@ if (isset($_SESSION['correo'])) {
                         $vocacion = '';
                       }
 
-                      if ($solicitud['estado'] == 2) {
-                        $estado = 'Cotizado';
+                      if ($solicitud['estado'] == 1) {
+                        $estado = 'Aceptado';
                       }
 
                       echo '<tr class="text-center">
                                 <td>' . $solicitud['nombre'] . ' ' . $solicitud['apellidos'] . '</td>
-                                <td>' . $solicitud['correo'] . '</td>
-                                <td>' . $solicitud['telefono'] . '</td>
-                                <td>' . $solicitud['tipo_contrato'] . '</td>
+                                <td>' . $solicitud['id_contratacion'] . '</td>
+                                <td>' . $solicitud['domicilio'] . '</td>
                                 <td><span class="badge bg-success">' . $estado . '</span></td>
                                 <td>' . strftime('%m-%d-%Y %I:%M %p', strtotime($solicitud['fecha_solicitud'])) . '</td>
                                 <td>
-                                  <a target="_blank" href="../cotizaciones/' . $solicitud['contrato'] . '/' . $solicitud['cotizacion'] . '" class="btn btn-sm btn-info"><i class="fas fa-file"></i>Cotización</a>
-                                </td>
-                                <td>
-                                  ' . $estado_envio . '
+                                <div class="row">
+                                  <div class="col-sm-12 mb-1">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalCotizacion" onclick="cotizar(' . $solicitud['id_contratacion'] . ')" class="btn btn-sm btn-primary">Cotizar</button>
+                                  </div>
                                 </td>
                               </tr>';
                     }
                     ?>
                   </tbody>
                 </table>
+                <!-- Modal para cotizar-->
+                <div class="modal fade" id="modalCotizacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cotización</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form id="cotizar">
+                        <input type="text" hidden name="id_contrato" id="id_contrato">
+                        <div class="modal-body">
+                          <label class="form-label">Archivo de cotización</label>
+                          <input type="file" name="cotizacion" class="form-control" required>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-success">Enviar cotización</button>
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>

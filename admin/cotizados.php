@@ -11,7 +11,7 @@ if (isset($_SESSION['correo'])) {
 
   $rowUsuario = $usuario->fetch();
 
-  if ($rowUsuario['rol'] != 2) {
+  if ($rowUsuario['rol'] != 0) {
     header("Location: ../index.php");
   }
 } else {
@@ -24,7 +24,7 @@ if (isset($_SESSION['correo'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicio</title>
+  <title>CAPDAM</title>
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -73,7 +73,28 @@ if (isset($_SESSION['correo'])) {
                   <a href="index.php">Pendientes</a>
                 </li>
                 <li class="submenu-item ">
+                  <a href="cotizar.php">Aceptadas</a>
+                </li>
+                <li class="submenu-item ">
                   <a href="cotizados.php">Cotizados</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="sidebar-item  has-sub">
+              <a href="#" class='sidebar-link'>
+                <i class="fas fa-users"></i>
+                <span>Usuarios</span>
+              </a>
+              <ul class="submenu ">
+                <li class="submenu-item ">
+                  <a href="usuarios.php">Lista de usuarios</a>
+                </li>
+                <li class="submenu-item ">
+                  <a href="nuevo_jefe.php">Añadir jefe de área</a>
+                </li>
+                <li class="submenu-item ">
+                  <a href="nuevo_recepcionista.php">Añadir recepcionista</a>
                 </li>
               </ul>
             </li>
@@ -104,7 +125,7 @@ if (isset($_SESSION['correo'])) {
                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                   <div class="user-menu d-flex">
                     <div class="user-name text-end me-3">
-                      <h6 class="mb-0 text-gray-600">Recepcionista</h6>
+                      <h6 class="mb-0 text-gray-600">Administrador</h6>
                       <h6 class="mb-0 text-gray-600"><?php echo $rowUsuario['correo']; ?> </h6>
                     </div>
                     <div class="user-img d-flex align-items-center">
@@ -145,7 +166,6 @@ if (isset($_SESSION['correo'])) {
                       <th>Estatus</th>
                       <th>Fecha de cotización</th>
                       <th>Adjuntos</th>
-                      <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -163,7 +183,7 @@ if (isset($_SESSION['correo'])) {
                       $estado_envio = '';
 
                       if ($solicitud['estatus_cotizacion'] == 0) {
-                        $estado_envio = '<button onclick="enviarCotizacion(' . $solicitud['id_cotizacion'] . ')" class="btn btn-sm btn-primary"><i class="fas fa-paper-plane me-2"></i>Enviar cotización</button>';
+                        $estado_envio = '<span class="badge bg-danger">Cotización pendiente por enviar</span>';
                       } else {
                         $estado_envio = '<span class="badge bg-info">Cotización enviada</span>';
                       }

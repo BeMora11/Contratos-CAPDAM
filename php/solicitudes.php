@@ -7,6 +7,7 @@
   $correo = $_POST['correo'];
   $telefono = $_POST['telefono'];
   $domicilio = $_POST['domicilio'];
+  $delegacion = $_POST['delegacion'];
   $posesion = $_FILES['posesion']['name'];
   $predial = $_FILES['predial']['name'];
   $ine = $_FILES['ine']['name'];
@@ -20,21 +21,22 @@
   $estado = 0; //Estado 0 es cuando apenas envia la solicitud a revisión
   $fecha = date('Y-m-d H:i:s');
 
-  $query = $conexion -> connect() -> prepare("INSERT INTO contratacion(nombre, apellidos, correo, telefono, domicilio, derecho_posesion, predial, ine, curp, vocacion_uso, fachada, tipo_contrato, estado, fecha_solicitud) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $query = $conexion -> connect() -> prepare("INSERT INTO contratacion(nombre, apellidos, correo, telefono, domicilio, delegacion, derecho_posesion, predial, ine, curp, vocacion_uso, fachada, tipo_contrato, estado, fecha_solicitud) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
   $query -> bindValue(1, $nombre);
   $query -> bindValue(2, $apellidos);
   $query -> bindValue(3, $correo);
   $query -> bindValue(4, $telefono);
   $query -> bindValue(5, $domicilio);
-  $query -> bindValue(6, $posesion);
-  $query -> bindValue(7, $predial);
-  $query -> bindValue(8, $ine);
-  $query -> bindValue(9, $curp);
-  $query -> bindValue(10, $vocacion);
-  $query -> bindValue(11, $fachada);
-  $query -> bindValue(12, $tipo_contrato);
-  $query -> bindValue(13, $estado);
-  $query -> bindValue(14, $fecha);
+  $query -> bindValue(6, $delegacion);
+  $query -> bindValue(7, $posesion);
+  $query -> bindValue(8, $predial);
+  $query -> bindValue(9, $ine);
+  $query -> bindValue(10, $curp);
+  $query -> bindValue(11, $vocacion);
+  $query -> bindValue(12, $fachada);
+  $query -> bindValue(13, $tipo_contrato);
+  $query -> bindValue(14, $estado);
+  $query -> bindValue(15, $fecha);
 
   $ruta_solicitud = '../solicitudes/';
   $ruta_solicitud_usuario = $ruta_solicitud . $correo . "/";

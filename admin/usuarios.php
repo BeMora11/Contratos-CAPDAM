@@ -11,7 +11,7 @@ if (isset($_SESSION['correo'])) {
 
   $rowUsuario = $usuario->fetch();
 
-  if ($rowUsuario['rol'] != 2) {
+  if ($rowUsuario['rol'] != 0) {
     header("Location: ../index.php");
   }
 } else {
@@ -24,7 +24,7 @@ if (isset($_SESSION['correo'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicio</title>
+  <title>CAPDAM</title>
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -73,7 +73,28 @@ if (isset($_SESSION['correo'])) {
                   <a href="index.php">Pendientes</a>
                 </li>
                 <li class="submenu-item ">
+                  <a href="cotizar.php">Aceptadas</a>
+                </li>
+                <li class="submenu-item ">
                   <a href="cotizados.php">Cotizados</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="sidebar-item  has-sub">
+              <a href="#" class='sidebar-link'>
+                <i class="fas fa-users"></i>
+                <span>Usuarios</span>
+              </a>
+              <ul class="submenu ">
+                <li class="submenu-item ">
+                  <a href="usuarios.php">Lista de usuarios</a>
+                </li>
+                <li class="submenu-item ">
+                  <a href="nuevo_jefe.php">Añadir jefe de área</a>
+                </li>
+                <li class="submenu-item ">
+                  <a href="nuevo_recepcionista.php">Añadir recepcionista</a>
                 </li>
               </ul>
             </li>
@@ -98,13 +119,13 @@ if (isset($_SESSION['correo'])) {
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                
+
               </ul>
               <div class="dropdown">
                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                   <div class="user-menu d-flex">
                     <div class="user-name text-end me-3">
-                      <h6 class="mb-0 text-gray-600">Recepcionista</h6>
+                      <h6 class="mb-0 text-gray-600">Administrador</h6>
                       <h6 class="mb-0 text-gray-600"><?php echo $rowUsuario['correo']; ?> </h6>
                     </div>
                     <div class="user-img d-flex align-items-center">
@@ -128,7 +149,7 @@ if (isset($_SESSION['correo'])) {
           <div class="page-title">
             <div class="row">
               <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Solicitudes de contratación cotizados</h3>
+                <h3>Usuarios</h3>
               </div>
             </div>
           </div>
@@ -138,58 +159,36 @@ if (isset($_SESSION['correo'])) {
                 <table class="table table-striped" id="table1">
                   <thead>
                     <tr class="text-center">
-                      <th>Nombre</th>
                       <th>Correo</th>
-                      <th>Telefono</th>
-                      <th>Tipo de contrato</th>
-                      <th>Estatus</th>
-                      <th>Fecha de cotización</th>
-                      <th>Adjuntos</th>
+                      <th>Tipo de usuario</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
 
-                    $query = $conexion->connect()->query("SELECT * FROM cotizaciones INNER JOIN contratacion ON cotizaciones.contrato = contratacion.id_contratacion");
+                    $query = $conexion->connect()->query("SELECT * FROM usuarios WHERE rol != 0");
                     $query->execute();
 
-                    $solicitudes = $query->fetchAll();
+                    $usuarios = $query->fetchAll();
 
-                    foreach ($solicitudes as $solicitud) {
+                    foreach ($usuarios as $row) {
 
-                      $estado = '';
-                      $vocacion;
-                      $estado_envio = '';
+                      $rol = '';
 
-                      if ($solicitud['estatus_cotizacion'] == 0) {
-                        $estado_envio = '<button onclick="enviarCotizacion(' . $solicitud['id_cotizacion'] . ')" class="btn btn-sm btn-primary"><i class="fas fa-paper-plane me-2"></i>Enviar cotización</button>';
-                      } else {
-                        $estado_envio = '<span class="badge bg-info">Cotización enviada</span>';
+                      if ($row['rol'] == 1) {
+                        $rol = 'Jefe de área';
                       }
-
-                      if ($solicitud['vocacion_uso'] != null) {
-                        $vocacion = '<a class="dropdown-item" href="../solicitudes/' . $solicitud['correo'] . '/' . $solicitud['vocacion_uso'] . '" target="_blank">Vocación de uso de suelo</a>';
-                      } else {
-                        $vocacion = '';
-                      }
-
-                      if ($solicitud['estado'] == 2) {
-                        $estado = 'Cotizado';
+                      if ($row['rol'] == 2) {
+                        $rol = 'Recepcionista';
                       }
 
                       echo '<tr class="text-center">
-                                <td>' . $solicitud['nombre'] . ' ' . $solicitud['apellidos'] . '</td>
-                                <td>' . $solicitud['correo'] . '</td>
-                                <td>' . $solicitud['telefono'] . '</td>
-                                <td>' . $solicitud['tipo_contrato'] . '</td>
-                                <td><span class="badge bg-success">' . $estado . '</span></td>
-                                <td>' . strftime('%m-%d-%Y %I:%M %p', strtotime($solicitud['fecha_solicitud'])) . '</td>
+                                <td>' . $row['correo'] . '</td>
+                                <td>' . $rol . '</td>
                                 <td>
-                                  <a target="_blank" href="../cotizaciones/' . $solicitud['contrato'] . '/' . $solicitud['cotizacion'] . '" class="btn btn-sm btn-info"><i class="fas fa-file"></i>Cotización</a>
-                                </td>
-                                <td>
-                                  ' . $estado_envio . '
+                                  <a href="editar_usuario.php?usuario='.$row['id_usuario'].'" class="btn btn-sm btn-primary">Editar</a>
+                                  <a onclick="deleteUser('.$row['id_usuario'].')" class="btn btn-sm btn-danger">Eliminar</a>
                                 </td>
                               </tr>';
                     }

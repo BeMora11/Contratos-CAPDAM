@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="assets/css/app.css">
   <link rel="stylesheet" href="assets/css/pages/auth.css">
+  <link rel="stylesheet" href="assets/vendors/sweetalert2/sweetalert2.min.css.css">
 </head>
 
 <body>
@@ -38,15 +39,25 @@
           <label class="form-label">Domicilio:</label>
           <input type="text" placeholder="Ingresa tu domicilio" name="domicilio" class="form-control" required>
         </div>
-        <!-- <div class="col-sm-12 mb-2">
+        <div class="col-sm-12 mb-2">
           <label class="form-label">Delegación:</label>
-          <select name="delegacion" class="form-select">
+          <select name="delegacion" class="form-select" required>
             <option selected>Seleccione una delegación</option>
-            <option>Seleccione una delegación</option>
-            <option>Seleccione una delegación</option>
-            <option>Seleccione una delegación</option>
+            <?php
+              include_once 'php/conexion.php';
+              $conexion = new Conexion();
+
+              $query = $conexion -> connect() -> query("SELECT * FROM delegaciones");
+              $query -> execute();
+
+              $delegaciones = $query -> fetchAll();
+
+              foreach($delegaciones as $delegacion){
+                echo '<option value="'.$delegacion['id_delegacion'].'">'.$delegacion['delegacion'].'</option>';
+              }
+            ?>
           </select>
-        </div> -->
+        </div>
         <div class="col-sm-4 mb-2">
           <label class="form-label">Copia de derecho de posesión o constancia del ejido firmada y sellada:</label>
           <input type="file" name="posesion" class="form-control" required>
@@ -92,15 +103,29 @@
         .then(r => {
           console.log(r)
           if (r == 1) {
-            alert('Solicitud enviada correctamente');
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Solicitud aceptada satisfactoriamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
             contratacionRural.reset();
           } else {
-            alert('Ha ocurrido un error');
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Ha ocurrido un error',
+              showConfirmButton: false,
+              timer: 1500
+            })
           }
         })
         .catch(err => console.log(err));
     }
   </script>
+
+  <script src="assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
 </body>
 
 </html>
