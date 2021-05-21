@@ -4,6 +4,7 @@
 
   $id_contrato = $_POST['id_contrato'];
   $cotizacion = $_FILES['cotizacion']['name'];
+  $inspeccion = $_FILES['inspeccion']['name'];
   $fecha = date('Y-m-d H:i:s');
   $estado = 0;
 
@@ -19,11 +20,13 @@
   }
 
   move_uploaded_file($_FILES['cotizacion']['tmp_name'], $ruta_cotizacion_contrato.$cotizacion);
+  move_uploaded_file($_FILES['inspeccion']['tmp_name'], $ruta_cotizacion_contrato.$inspeccion);
 
-  $query = $conexion -> connect() -> prepare("INSERT INTO cotizaciones(contrato, cotizacion, fecha_cotizado, estatus_cotizacion) VALUES(?, ?, ?, ?)");
+  $query = $conexion -> connect() -> prepare("INSERT INTO cotizaciones(contrato, cotizacion, inspeccionc, fecha_cotizado, estatus_cotizacion) VALUES(?, ?, ?, ?, ?)");
   $query -> bindValue(1, $id_contrato);
   $query -> bindValue(2, $cotizacion);
-  $query -> bindValue(3, $fecha);
-  $query -> bindValue(4, $estado);
+  $query -> bindValue(3, $inspeccion);
+  $query -> bindValue(4, $fecha);
+  $query -> bindValue(5, $estado);
   echo $query -> execute();
 ?>

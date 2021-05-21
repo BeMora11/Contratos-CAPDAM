@@ -129,8 +129,10 @@ if (isset($_SESSION['correo'])) {
                       <th>Nombre</th>
                       <th>No. contrato</th>
                       <th>Domicilio</th>
+                      <th>Tipo de contrato</th>
                       <th>Estatus</th>
                       <th>Fecha de solicitud</th>
+                      <th>Adjuntos</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
@@ -161,8 +163,12 @@ if (isset($_SESSION['correo'])) {
                                 <td>' . $solicitud['nombre'] . ' ' . $solicitud['apellidos'] . '</td>
                                 <td>' . $solicitud['id_contratacion'] . '</td>
                                 <td>' . $solicitud['domicilio'] . '</td>
+                                <td>' . $solicitud['tipo'] . '</td>
                                 <td><span class="badge bg-success">' . $estado . '</span></td>
                                 <td>' . strftime('%m-%d-%Y %I:%M %p', strtotime($solicitud['fecha_solicitud'])) . '</td>
+                                <td>
+                                <a target="_blank" href="../solicitudes/' . $solicitud['correo'] . '/' . $solicitud['inspeccion'] . '" class="btn btn-sm btn-info"><i class="fas fa-file me-1"></i>Inspección</a>
+                                </td>
                                 <td>
                                 <div class="row">
                                   <div class="col-sm-12 mb-1">
@@ -187,6 +193,10 @@ if (isset($_SESSION['correo'])) {
                         <div class="modal-body">
                           <label class="form-label">Archivo de cotización</label>
                           <input type="file" name="cotizacion" class="form-control" required>
+                        </div>
+                        <div class="modal-body">
+                          <label class="form-label">Archivo de inspección</label>
+                          <input type="file" name="inspeccion" class="form-control" required>
                         </div>
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-success">Enviar cotización</button>

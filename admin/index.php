@@ -163,8 +163,10 @@ if (isset($_SESSION['correo'])) {
                       <th>Correo</th>
                       <th>Telefono</th>
                       <th>Tipo de contrato</th>
+                      <th>Tipo</th>
                       <th>Delegación</th>
                       <th>Estatus</th>
+                      <th>Adjuntos</th>
                       <th>Fecha de solicitud</th>
                     </tr>
                   </thead>
@@ -196,7 +198,23 @@ if (isset($_SESSION['correo'])) {
                                 <td>' . $solicitud['correo'] . '</td>
                                 <td>' . $solicitud['telefono'] . '</td>
                                 <td>' . $solicitud['tipo_contrato'] . '</td>
+                                <td>' . $solicitud['tipo'] . '</td>
                                 <td>' . $solicitud['delegacion'] . '</td>
+                                <td>
+                                  <div class="">
+                                    <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                      <i class="fas fa-folder mr-2"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenuButton1">
+                                      <li><a class="dropdown-item" href="../solicitudes/' . $solicitud['correo'] . '/' . $solicitud['derecho_posesion'] . '" target="_blank">Derecho de posesión</a></li>
+                                      <li><a class="dropdown-item" href="../solicitudes/' . $solicitud['correo'] . '/' . $solicitud['predial'] . '" target="_blank">Predial</a></li>
+                                      <li><a class="dropdown-item" href="../solicitudes/' . $solicitud['correo'] . '/' . $solicitud['ine'] . '" target="_blank">INE</a></li>
+                                      <li><a class="dropdown-item" href="../solicitudes/' . $solicitud['correo'] . '/' . $solicitud['curp'] . '" target="_blank">CURP</a></li>
+                                      <li>' . $vocacion . '</li>
+                                      <li><a class="dropdown-item" href="../solicitudes/' . $solicitud['correo'] . '/' . $solicitud['fachada'] . '" target="_blank">Fachada del predio</a></li>
+                                    </ul>
+                                  </div>
+                                </td>
                                 <td><span class="badge bg-danger">' . $estado . '</span></td>
                                 <td>' . strftime('%m-%d-%Y %I:%M %p', strtotime($solicitud['fecha_solicitud'])) . '</td>
                               </tr>';

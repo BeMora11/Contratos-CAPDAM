@@ -164,6 +164,7 @@ if (isset($_SESSION['correo'])) {
                       <th>Telefono</th>
                       <th>Tipo de contrato</th>
                       <th>Estatus</th>
+                      <th>Adjuntos</th>
                       <th>Fecha de cotización</th>
                     </tr>
                   </thead>
@@ -204,6 +205,10 @@ if (isset($_SESSION['correo'])) {
                                 <td>' . $solicitud['tipo_contrato'] . '</td>
                                 <td>
                                   ' . $estado_envio . '
+                                </td>
+                                <td>
+                                  <a target="_blank" href="../cotizaciones/' . $solicitud['contrato'] . '/' . $solicitud['cotizacion'] . '" class="btn btn-sm mb-1 btn-info"><i class="fas fa-file me-1"></i>Cotización</a>
+                                  <a target="_blank" href="../cotizaciones/' . $solicitud['contrato'] . '/' . $solicitud['inspeccionc'] . '" class="btn btn-sm btn-info"><i class="fas fa-file me-1"></i>Inspección</a>
                                 </td>
                                 <td>' . strftime('%m-%d-%Y %I:%M %p', strtotime($solicitud['fecha_solicitud'])) . '</td>
                               </tr>';

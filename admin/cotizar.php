@@ -154,6 +154,7 @@ if (isset($_SESSION['correo'])) {
                       <th>No. contrato</th>
                       <th>Domicilio</th>
                       <th>Estatus</th>
+                      <th>Adjuntos</th>
                       <th>Fecha de solicitud</th>
                     </tr>
                   </thead>
@@ -185,6 +186,9 @@ if (isset($_SESSION['correo'])) {
                                 <td>' . $solicitud['id_contratacion'] . '</td>
                                 <td>' . $solicitud['domicilio'] . '</td>
                                 <td><span class="badge bg-success">' . $estado . '</span></td>
+                                <td>
+                                <a target="_blank" href="../solicitudes/' . $solicitud['correo'] . '/' . $solicitud['inspeccion'] . '" class="btn btn-sm btn-info"><i class="fas fa-file me-1"></i>Inspección</a>
+                                </td>
                                 <td>' . strftime('%m-%d-%Y %I:%M %p', strtotime($solicitud['fecha_solicitud'])) . '</td>
                               </tr>';
                     }

@@ -3,6 +3,8 @@
   $conexion = new Conexion();
 
   $nombre = $_POST['nombre'];
+  $clave = $_POST['clave'];
+  $tipo = $_POST['tipo'];
   $apellidos = $_POST['apellidos'];
   $correo = $_POST['correo'];
   $telefono = $_POST['telefono'];
@@ -21,7 +23,7 @@
   $estado = 0; //Estado 0 es cuando apenas envia la solicitud a revisión
   $fecha = date('Y-m-d H:i:s');
 
-  $query = $conexion -> connect() -> prepare("INSERT INTO contratacion(nombre, apellidos, correo, telefono, domicilio, delegacion, derecho_posesion, predial, ine, curp, vocacion_uso, fachada, tipo_contrato, estado, fecha_solicitud) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $query = $conexion -> connect() -> prepare("INSERT INTO contratacion(nombre, apellidos, correo, telefono, domicilio, delegacion, derecho_posesion, predial, ine, curp, vocacion_uso, fachada, tipo_contrato, estado, fecha_solicitud, clave_catastro, tipo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
   $query -> bindValue(1, $nombre);
   $query -> bindValue(2, $apellidos);
   $query -> bindValue(3, $correo);
@@ -37,6 +39,8 @@
   $query -> bindValue(13, $tipo_contrato);
   $query -> bindValue(14, $estado);
   $query -> bindValue(15, $fecha);
+  $query -> bindValue(16, $clave);
+  $query -> bindValue(17, $tipo);
 
   $ruta_solicitud = '../solicitudes/';
   $ruta_solicitud_usuario = $ruta_solicitud . $correo . "/";

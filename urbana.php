@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicio de sesión</title>
+  <title>Zona urbana</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/bootstrap.css">
   <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
@@ -37,7 +37,25 @@
         </div>
         <div class="col-sm-12 mb-2">
           <label class="form-label">Domicilio:</label>
-          <input type="text" placeholder="Ingresa tu numero de telefono" name="domicilio" class="form-control" required>
+          <input type="text" placeholder="Ingresa tu domicilio" name="domicilio" class="form-control" required>
+        </div>
+        <div class="col-sm-12 mb-2">
+          <label class="form-label">Clave catastral:</label>
+          <input type="text" placeholder="Ingresa tu clave catastral" name="clave" class="form-control" required>
+        </div>
+        <div class="col-sm-12 mb-2">
+          <label class="form-label">Tipo de contrato:</label>
+          <select name="tipo" class="form-select">
+            <option selected>Seleccione un tipo de contrato</option>
+            <option value="Domestico A">Domestico A</option>
+            <option value="Domestico B">Domestico B</option>
+            <option value="Mixto">Mixto</option>
+            <option value="Condominal">Condominal</option>
+            <option value="Condominal B">Condominal B</option>
+            <option value="Comercial A">Comercial A</option>
+            <option value="Industrial">Industrial</option>
+            <option value="Domestico zona rural">Domestico zona rural</option>
+          </select>
         </div>
         <div class="col-sm-12 mb-2">
           <label class="form-label">Delegación:</label>

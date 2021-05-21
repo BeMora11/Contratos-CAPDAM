@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicio de sesión</title>
+  <title>Zona rural</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/bootstrap.css">
   <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
@@ -39,22 +39,43 @@
           <label class="form-label">Domicilio:</label>
           <input type="text" placeholder="Ingresa tu domicilio" name="domicilio" class="form-control" required>
         </div>
+        <div class="col-sm-12 mb-2" style="height: 250px;">
+          <div id="map"></div>
+        </div>
+        <div class="col-sm-12 mb-2">
+          <label class="form-label">Clave catastral:</label>
+          <input type="text" placeholder="Ingresa tu clave catastral" name="clave" class="form-control" required>
+        </div>
+        <div class="col-sm-12 mb-2">
+          <label class="form-label">Tipo de contrato:</label>
+          <select name="tipo" class="form-select">
+            <option selected>Seleccione un tipo de contrato</option>
+            <option value="Domestico A">Domestico A</option>
+            <option value="Domestico B">Domestico B</option>
+            <option value="Mixto">Mixto</option>
+            <option value="Condominal">Condominal</option>
+            <option value="Condominal B">Condominal B</option>
+            <option value="Comercial A">Comercial A</option>
+            <option value="Industrial">Industrial</option>
+            <option value="Domestico zona rural">Domestico zona rural</option>
+          </select>
+        </div>
         <div class="col-sm-12 mb-2">
           <label class="form-label">Delegación:</label>
           <select name="delegacion" class="form-select" required>
             <option selected>Seleccione una delegación</option>
             <?php
-              include_once 'php/conexion.php';
-              $conexion = new Conexion();
+            include_once 'php/conexion.php';
+            $conexion = new Conexion();
 
-              $query = $conexion -> connect() -> query("SELECT * FROM delegaciones");
-              $query -> execute();
+            $query = $conexion->connect()->query("SELECT * FROM delegaciones");
+            $query->execute();
 
-              $delegaciones = $query -> fetchAll();
+            $delegaciones = $query->fetchAll();
 
-              foreach($delegaciones as $delegacion){
-                echo '<option value="'.$delegacion['id_delegacion'].'">'.$delegacion['delegacion'].'</option>';
-              }
+            foreach ($delegaciones as $delegacion) {
+              echo '<option value="' . $delegacion['id_delegacion'] . '">' . $delegacion['delegacion'] . '</option>';
+            }
             ?>
           </select>
         </div>
@@ -85,7 +106,44 @@
     </form>
   </div>
 
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSWjNRJdjcKyVfPgym0tcqMISTdRc2Tls&callback=iniciarMap()"></script> -->
+
   <script>
+    function findMe() {
+      var output = document.getElementById('map');
+
+      // Verificar si soporta geolocalizacion
+      if (navigator.geolocation) {
+        output.innerHTML = "<p>Tu navegador soporta Geolocalizacion</p>";
+      } else {
+        output.innerHTML = "<p>Tu navegador no soporta Geolocalizacion</p>";
+      }
+
+      //Obtenemos latitud y longitud
+      function localizacion(posicion) {
+
+        var latitude = posicion.coords.latitude;
+        var longitude = posicion.coords.longitude;
+
+        var imgURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&size=600x300&markers=color:red%7C" + latitude + "," + longitude + "&key=AIzaSyDSWjNRJdjcKyVfPgym0tcqMISTdRc2Tls";
+
+        output.innerHTML = "<img src='" + imgURL + "'>";
+
+
+
+      }
+
+      function error() {
+        output.innerHTML = "<p>No se pudo obtener tu ubicación</p>";
+
+      }
+
+      navigator.geolocation.getCurrentPosition(localizacion, error);
+
+    }
+
+    findMe();
+
     const contratacionRural = document.getElementById('contratacionRural');
 
     contratacionRural.onsubmit = function(e) {

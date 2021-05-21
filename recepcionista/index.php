@@ -135,6 +135,28 @@ if (isset($_SESSION['correo'])) {
           <section class="section">
             <div class="card">
               <div class="card-body">
+                <!-- Modal para aceptar solicitud-->
+                <div class="modal fade" id="modalAceptar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Aceptación de solicitud</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form id="aceptar" enctype="multipart/form-data">
+                        <input type="text" hidden name="id_contrato" id="id_contrato">
+                        <div class="modal-body">
+                          <label class="form-label">Archivo de inspección</label>
+                          <input type="file" name="inspeccion" class="form-control" required>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-success">Enviar a jefe de área</button>
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
                 <table class="table table-striped" id="table1">
                   <thead>
                     <tr class="text-center">
@@ -198,7 +220,7 @@ if (isset($_SESSION['correo'])) {
                                 <td>
                                 <div class="row">
                                   <div class="col-sm-12 mb-1">
-                                    <button onclick="aceptar_solicitud(' . $solicitud['id_contratacion'] . ')" class="btn btn-sm btn-primary">Aceptar</button>
+                                    <button data-bs-toggle="modal" data-bs-target="#modalAceptar" onclick="infoSolicitud(' . $solicitud['id_contratacion'] . ')" class="btn btn-sm btn-primary">Aceptar</button>
                                   </div>
                                   <div class="col-sm-12">
                                     <button onclick="rechazar_solicitud(' . $solicitud['id_contratacion'] . ')" class="btn btn-sm btn-danger">Rechazar</button>
