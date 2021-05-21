@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2021 a las 18:34:47
+-- Tiempo de generación: 21-05-2021 a las 18:17:44
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.15
 
@@ -43,7 +43,10 @@ CREATE TABLE `contratacion` (
   `fachada` varchar(50) NOT NULL,
   `tipo_contrato` varchar(30) NOT NULL,
   `estado` int(1) NOT NULL,
-  `fecha_solicitud` datetime NOT NULL
+  `fecha_solicitud` datetime NOT NULL,
+  `clave_catastro` varchar(80) NOT NULL,
+  `tipo` varchar(50) NOT NULL,
+  `inspeccion` varchar(120) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -56,6 +59,7 @@ CREATE TABLE `cotizaciones` (
   `id_cotizacion` int(11) NOT NULL,
   `contrato` int(11) NOT NULL,
   `cotizacion` varchar(120) NOT NULL,
+  `inspeccionc` varchar(120) NOT NULL,
   `fecha_cotizado` datetime NOT NULL,
   `estatus_cotizacion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -103,8 +107,7 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id_usuario`, `correo`, `password`, `rol`, `delegacion`) VALUES
 (9, 'admin@capdam.com', 'd033e22ae348aeb5660fc2140aec35850c4da997', 0, NULL),
 (17, 'recepcionista', 'd033e22ae348aeb5660fc2140aec35850c4da997', 2, NULL),
-(20, 'jefe', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 1),
-(21, 'jefe2@corrreo.com', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 2);
+(20, 'jefe', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 2);
 
 --
 -- Índices para tablas volcadas
@@ -142,13 +145,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `contratacion`
 --
 ALTER TABLE `contratacion`
-  MODIFY `id_contratacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id_contratacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT de la tabla `cotizaciones`
 --
 ALTER TABLE `cotizaciones`
-  MODIFY `id_cotizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_cotizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `delegaciones`
