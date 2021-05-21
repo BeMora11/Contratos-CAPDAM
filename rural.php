@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
   <title>Zona rural</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -148,42 +150,23 @@
 
     contratacionRural.onsubmit = function(e) {
       e.preventDefault();
+=======
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
 
-      let data = new FormData(contratacionRural);
+<body>
+  <div class="row">
 
-      // console.log(data)
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title">Su solicitud ha sido <span class="badge bg-info">rechadada</span></h4>
+        <p>Verifique que los documentos proporionados sean los correctos.</p>
+      </div>
+    </div>
+>>>>>>> 76b9283420cf0a162ac22ac1b56ae1fcb9172a0b
 
-      fetch('php/solicitudes.php', {
-          method: "POST",
-          body: data
-        })
-        .then(r => r.text())
-        .then(r => {
-          console.log(r)
-          if (r == 1) {
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'Solicitud aceptada satisfactoriamente',
-              showConfirmButton: false,
-              timer: 1500
-            })
-            contratacionRural.reset();
-          } else {
-            Swal.fire({
-              position: 'top-end',
-              icon: 'error',
-              title: 'Ha ocurrido un error',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          }
-        })
-        .catch(err => console.log(err));
-    }
-  </script>
-
-  <script src="assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+  </div>
 </body>
-
+<a href="https://capdam.gob.mx/contratos_linea/rural.php">https://capdam.gob.mx/contratos_linea/rural.php</a>
 </html>
