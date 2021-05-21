@@ -128,7 +128,7 @@
             Swal.fire({
               position: 'top-end',
               icon: 'success',
-              title: 'Solicitud aceptada satisfactoriamente',
+              title: 'Solicitud enviada correctamente',
               showConfirmButton: false,
               timer: 1500
             })
