@@ -15,11 +15,26 @@
 </head>
 
 <body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="" href="#"><img src="assets/images/logo.png" width="65" height="65" alt=""></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="rural.php">Zona rural</a>
+          <a class="nav-link" href="urbana.php">Zona urbana</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
     <h4 class="mt-4">Contratación de agua y drenaje (Zona rural)</h4>
     <form action="" method="POST" id="contratacionRural" enctype="multipart/form-data">
       <input type="text" hidden value="Rural" name="tipo_contrato">
-      <div class="row mt-5">
+      <div class="row my-5">
         <div class="col-sm-6 mb-2">
           <label class="form-label">Nombre:</label>
           <input type="text" placeholder="Ingresa tu nombre" name="nombre" class="form-control" required>
@@ -39,9 +54,6 @@
         <div class="col-sm-12 mb-2">
           <label class="form-label">Domicilio:</label>
           <input type="text" placeholder="Ingresa tu domicilio" name="domicilio" class="form-control" required>
-        </div>
-        <div class="col-sm-12 mb-2" style="height: 250px;">
-          <div id="map"></div>
         </div>
         <div class="col-sm-12 mb-2">
           <label class="form-label">Clave catastral:</label>
@@ -107,44 +119,9 @@
     </form>
   </div>
 
-  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSWjNRJdjcKyVfPgym0tcqMISTdRc2Tls&callback=iniciarMap()"></script> -->
+  <script src="assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
 
   <script>
-    function findMe() {
-      var output = document.getElementById('map');
-
-      // Verificar si soporta geolocalizacion
-      if (navigator.geolocation) {
-        output.innerHTML = "<p>Tu navegador soporta Geolocalizacion</p>";
-      } else {
-        output.innerHTML = "<p>Tu navegador no soporta Geolocalizacion</p>";
-      }
-
-      //Obtenemos latitud y longitud
-      function localizacion(posicion) {
-
-        var latitude = posicion.coords.latitude;
-        var longitude = posicion.coords.longitude;
-
-        var imgURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&size=600x300&markers=color:red%7C" + latitude + "," + longitude + "&key=AIzaSyDSWjNRJdjcKyVfPgym0tcqMISTdRc2Tls";
-
-        output.innerHTML = "<img src='" + imgURL + "'>";
-
-
-
-      }
-
-      function error() {
-        output.innerHTML = "<p>No se pudo obtener tu ubicación</p>";
-
-      }
-
-      navigator.geolocation.getCurrentPosition(localizacion, error);
-
-    }
-
-    findMe();
-
     const contratacionRural = document.getElementById('contratacionRural');
 
     contratacionRural.onsubmit = function(e) {
@@ -185,5 +162,5 @@
     }
   </script>
 </body>
-<a href="https://capdam.gob.mx/contratos_linea/rural.php">https://capdam.gob.mx/contratos_linea/rural.php</a>
+
 </html>

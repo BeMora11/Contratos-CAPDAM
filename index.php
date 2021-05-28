@@ -18,8 +18,8 @@
         <div class="row h-100">
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
-                    <div class="auth-logo">
-                        <a href="index.php"><img src="assets/images/logo_fondo.png" alt="Logo"></a>
+                    <div class="mb-4">
+                        <a href="index.php"><img src="assets/images/logo_fondo.png" width="300px" height="auto" alt="Logo"></a>
                     </div>
 
                     <form action="php/login.php" method="POST">
@@ -45,9 +45,9 @@
                     </div> -->
                 </div>
             </div>
-            <div class="col-lg-7 d-none d-lg-block">
-                <div id="auth-right">
-
+            <div class="col-lg-7 d-none d-lg-flex justify-content-center align-items-center">
+                <div>
+                    <img src="assets/images/logo.png" width="250px" height="auto" alt="Logo">
                 </div>
             </div>
         </div>
